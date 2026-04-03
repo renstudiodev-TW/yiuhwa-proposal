@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>育華興業休假系統 — 基礎版報價提案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft JhengHei", "微軟正黑體", "PingFang TC", sans-serif; color: #1a1a2e; background: #f4f4f8; line-height: 1.9; font-size: 16px; }
+
+  .section { max-width: 1040px; margin: 0 auto; padding: 72px 64px; }
+  .section + .section { padding-top: 0; }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #1f5f58 0%, #2a7a6f 50%, #1f5f58 100%);
+    color: #fff; text-align: center; padding: 120px 48px 96px;
+    position: relative; overflow: hidden;
+  }
+  .hero::after { content: ""; position: absolute; bottom: -2px; left: 0; right: 0; height: 48px; background: #f4f4f8; border-radius: 48px 48px 0 0; }
+  .hero-label { font-size: 16px; letter-spacing: 5px; opacity: .7; margin-bottom: 20px; }
+  .hero h1 { font-size: 46px; font-weight: 800; margin-bottom: 10px; }
+  .hero h2 { font-size: 22px; font-weight: 400; opacity: .85; margin-bottom: 48px; }
+  .hero-stats { display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-size: 60px; font-weight: 800; line-height: 1; }
+  .hero-stat .unit { font-size: 16px; opacity: .7; margin-top: 6px; }
+
+  /* ── Section Title ── */
+  .section-tag { font-size: 14px; letter-spacing: 4px; color: #1f5f58; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+  .section-heading { font-size: 32px; font-weight: 800; margin-bottom: 8px; color: #1a1a2e; }
+  .section-sub { font-size: 18px; color: #666; margin-bottom: 32px; }
+
+  /* ── Pain Grid ── */
+  .pain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin: 28px 0; }
+  .pain-box { background: #fff; border-radius: 16px; padding: 32px; border: 1px solid #e8eeec; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+  .pain-box h4 { font-size: 19px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .pain-box ul { font-size: 16px; color: #555; margin-left: 20px; }
+  .pain-box li { margin: 8px 0; }
+  .pain-box.before h4 { color: #c0392b; }
+  .pain-box.after h4 { color: #1f5f58; }
+
+  /* ── Module Cards (pricing) ── */
+  .mod-card {
+    background: #fff; border-radius: 18px; padding: 36px 32px;
+    border: 1px solid #e8eeec; box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    margin-bottom: 24px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .mod-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(31,95,88,.10); }
+  .mod-left { }
+  .mod-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .mod-icon { font-size: 32px; }
+  .mod-name { font-size: 21px; font-weight: 800; color: #1a1a2e; }
+  .mod-desc { font-size: 15.5px; color: #555; line-height: 1.7; margin-bottom: 14px; }
+  .mod-risk {
+    background: #fff8f0; border-left: 4px solid #e67e22; border-radius: 0 10px 10px 0;
+    padding: 14px 18px; font-size: 15px; color: #7f4b00; line-height: 1.7;
+  }
+  .mod-risk strong { color: #c0392b; }
+  .mod-right {
+    text-align: right; min-width: 160px; padding-top: 4px;
+  }
+  .mod-price { font-size: 32px; font-weight: 800; color: #1f5f58; white-space: nowrap; }
+  .mod-price-unit { font-size: 14px; color: #999; margin-top: 2px; }
+  .mod-bonus {
+    display: inline-block; font-size: 13px; padding: 4px 14px;
+    border-radius: 20px; font-weight: 700;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32;
+    margin-top: 8px;
+  }
+
+  /* ── Sum Table ── */
+  .sum-table { width: 100%; border-collapse: collapse; margin: 28px 0; font-size: 16px; }
+  .sum-table th, .sum-table td { border: 1px solid #d8ddd8; padding: 14px 20px; text-align: left; }
+  .sum-table th { background: #eef6f5; color: #1f5f58; font-weight: 600; }
+  .sum-table tr:nth-child(even) td { background: #fafcfc; }
+  .sum-table .sum-row td { font-weight: 800; font-size: 18px; background: #f0f0f0 !important; color: #999; }
+  .sum-table .sum-row td.line-through { text-decoration: line-through; color: #bbb; }
+
+  /* ── Bundle Card ── */
+  .bundle-card {
+    background: linear-gradient(135deg, #1f5f58, #2a7a6f);
+    border-radius: 20px; padding: 48px; text-align: center; margin: 36px 0;
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .bundle-card::before {
+    content: ""; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px;
+    background: rgba(255,255,255,.06); border-radius: 50%;
+  }
+  .bundle-card .bundle-label { font-size: 16px; letter-spacing: 3px; opacity: .7; margin-bottom: 8px; }
+  .bundle-card .bundle-price { font-size: 64px; font-weight: 800; }
+  .bundle-card .bundle-sub { font-size: 18px; opacity: .85; margin-top: 8px; }
+  .bundle-save {
+    display: inline-block; background: rgba(255,255,255,.15); border-radius: 30px;
+    padding: 8px 28px; font-size: 20px; font-weight: 700; margin-top: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ── Pay Steps ── */
+  .pay-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 28px 0; }
+  .pay-step {
+    background: #fff; border-radius: 16px; padding: 32px 28px;
+    border: 1px solid #e8eeec; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .pay-step .step-num { font-size: 14px; color: #1f5f58; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+  .pay-step .step-amount { font-size: 34px; font-weight: 800; color: #1f5f58; }
+  .pay-step .step-label { font-size: 15px; color: #888; margin-top: 6px; }
+  .pay-step .step-desc { font-size: 14px; color: #aaa; margin-top: 10px; }
+
+  /* ── Detail Table ── */
+  .detail-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 16px; }
+  .detail-table th, .detail-table td { border: 1px solid #d8ddd8; padding: 14px 18px; text-align: left; }
+  .detail-table th { background: #eef6f5; color: #1f5f58; font-weight: 600; }
+  .detail-table tr:nth-child(even) td { background: #fafcfc; }
+
+  /* ── Deploy Grid ── */
+  .deploy-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 28px 0; }
+  .deploy-card {
+    background: #fff; border-radius: 16px; padding: 32px 28px; text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05); border: 1px solid #e8eeec;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .deploy-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(31,95,88,.12); }
+  .deploy-card .d-icon { font-size: 36px; margin-bottom: 14px; }
+  .deploy-card h3 { font-size: 19px; font-weight: 700; color: #1f5f58; margin-bottom: 10px; }
+  .deploy-card p { font-size: 15.5px; color: #555; line-height: 1.7; }
+
+  .env-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+  .env-box { background: #fff; border-radius: 16px; padding: 28px; border: 1px solid #e8eeec; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+  .env-box h4 { color: #1f5f58; font-size: 17px; margin-bottom: 12px; }
+  .env-box ul { font-size: 15.5px; color: #555; margin-left: 20px; }
+  .env-box li { margin: 6px 0; }
+
+  /* ── Upgrade Section ── */
+  .upgrade-box {
+    background: #fff; border-radius: 18px; padding: 40px;
+    border: 2px dashed #c8d8d4; margin: 32px 0;
+  }
+  .upgrade-box h3 { font-size: 24px; font-weight: 800; color: #1f5f58; margin-bottom: 8px; }
+  .upgrade-box .up-sub { font-size: 17px; color: #666; margin-bottom: 24px; }
+  .up-features { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .up-feat {
+    background: #f8faf9; border-radius: 12px; padding: 18px 20px;
+    border: 1px solid #e8eeec; font-size: 15.5px; color: #444;
+  }
+  .up-feat strong { color: #1f5f58; display: block; margin-bottom: 4px; font-size: 16px; }
+  .upgrade-pricing {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 28px;
+  }
+  .up-price-box {
+    border-radius: 16px; padding: 32px; text-align: center;
+  }
+  .up-price-box.normal {
+    background: #f4f4f8; border: 1px solid #e0e0e0;
+  }
+  .up-price-box.combo {
+    background: linear-gradient(135deg, #1f5f58, #2a7a6f); color: #fff;
+    position: relative;
+  }
+  .up-price-label { font-size: 14px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; opacity: .7; }
+  .up-price-num { font-size: 36px; font-weight: 800; }
+  .up-price-box.normal .up-price-num { color: #1f5f58; }
+  .up-price-detail { font-size: 14px; margin-top: 6px; opacity: .75; }
+  .early-badge {
+    display: inline-block; background: #ffd54f; color: #5d4037; border-radius: 20px;
+    padding: 4px 16px; font-size: 13px; font-weight: 700; margin-bottom: 10px;
+  }
+  .up-save {
+    display: inline-block; background: rgba(255,255,255,.2); border-radius: 20px;
+    padding: 6px 20px; font-size: 15px; font-weight: 700; margin-top: 12px;
+  }
+  .up-note { font-size: 15px; color: #999; margin-top: 20px; text-align: center; }
+
+  /* ── CTA ── */
+  .cta {
+    text-align: center; padding: 56px 48px;
+    background: linear-gradient(135deg, #1f5f58 0%, #2a7a6f 100%);
+    color: #fff; border-radius: 20px; margin: 36px 0 0;
+  }
+  .cta h3 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+  .cta p { font-size: 17px; opacity: .85; }
+
+  .footer { text-align: center; padding: 36px; font-size: 14px; color: #aaa; }
+
+  /* ── RWD ── */
+  @media (max-width: 720px) {
+    .section { padding: 48px 24px; }
+    .hero { padding: 72px 24px 64px; }
+    .hero h1 { font-size: 32px; }
+    .hero h2 { font-size: 18px; }
+    .hero-stat .num { font-size: 42px; }
+    .section-heading { font-size: 26px; }
+    .pain-grid, .env-grid, .pay-steps, .up-features, .upgrade-pricing { grid-template-columns: 1fr; }
+    .deploy-cards { grid-template-columns: 1fr; }
+    .mod-card { grid-template-columns: 1fr; }
+    .mod-right { text-align: left; min-width: auto; }
+    .bundle-card .bundle-price { font-size: 44px; }
+    .cta h3 { font-size: 22px; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .mod-card:hover, .deploy-card:hover { transform: none; }
+    .hero, .bundle-card, .cta, .up-price-box.combo, .sum-table th, .detail-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .mod-risk { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .mod-bonus, .early-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<div class="hero">
+  <div class="hero-label">基礎版報價提案</div>
+  <h1>育華興業休假系統</h1>
+  <h2>WEB 版 — 系統已完成開發，可立即部署上線</h2>
+  <div style="margin-top:16px; font-size:16px; opacity:.7;">仁格數位科技有限公司（Ren Studio）</div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num">7</div>
+      <div class="unit">大功能模組</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">0</div>
+      <div class="unit">員工端需安裝軟體</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">3</div>
+      <div class="unit">個月免費保固</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ WHY ═══════════════════ -->
+<div class="section">
+  <div class="section-tag">Why</div>
+  <div class="section-heading">從紙本到數位，解決的不只是效率問題</div>
+  <div class="section-sub">一套好的休假系統，讓員工省事、主管省心、管理部省力。</div>
+  <div class="pain-grid">
+    <div class="pain-box before">
+      <h4>&#9888; 紙本流程的現況</h4>
+      <ul>
+        <li>紙本表單填寫、簽核、歸檔耗時費力</li>
+        <li>主管出差或不在座位，簽核流程停擺</li>
+        <li>特休、補休餘額靠人工計算，容易出錯</li>
+        <li>稽核查詢需翻找大量紙本資料</li>
+        <li>紙本保存困難，火災水患即全數遺失</li>
+      </ul>
+    </div>
+    <div class="pain-box after">
+      <h4>&#10004; 系統上線後</h4>
+      <ul>
+        <li>員工打開瀏覽器，3 分鐘完成請假</li>
+        <li>超過 48 小時未簽核，系統自動核准</li>
+        <li>特休、補休餘額即時顯示，零計算錯誤</li>
+        <li>所有操作自動寫入稽核紀錄，一鍵查詢</li>
+        <li>資料庫備份，隨時可還原</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MODULE PRICING ═══════════════════ -->
+<div class="section">
+  <div class="section-tag">Modules</div>
+  <div class="section-heading">您買到的不只是一套軟體</div>
+  <div class="section-sub">以下是系統包含的七大功能模組，以及每個模組在市場上的開發行情。我們同時列出「如果缺少該功能」可能造成的實際影響，供您評估系統的完整價值。</div>
+
+  <!-- M1 -->
+  <div class="mod-card">
+    <div class="mod-left">
+      <div class="mod-header">
+        <span class="mod-icon">&#128221;</span>
+        <span class="mod-name">核心請假系統</span>
+      </div>
+      <div class="mod-desc">Web 請假表單、14 種假別完整定義與規則引擎、整天／非整天模式、跨日申請、請假時數自動計算、附件上傳（1 檔 100MB）、請假事由填寫。</div>
+      <div class="mod-risk">
+        <strong>&#9888; 缺少這個功能：</strong>60 人每月產生 50～80 張紙本假單，全部手寫再交到管理部；假別規則靠管理部記在腦子裡，換人接手就容易出錯；一般假、整天假、跨日假的時數計算方式各不相同，用 Excel 算到頭痛。
+      </div>
+    </div>
+    <div class="mod-right">
+      <div class="mod-price">NT$ 90,000</div>
+      <div class="mod-price-unit">市場開發行情</div>
+    </div>
+  </div>
+
+  <!-- M2 -->
+  <div class="mod-card">
+    <div class="mod-left">
+      <div class="mod-header">
+        <span class="mod-icon">&#9989;</span>
+        <span class="mod-name">電子簽核流程</span>
+      </div>
+      <div class="mod-desc">員工 → 主管審核 → 管理部最終審核，支援核准、駁回與審核意見。簽核時自動套印 PNG 電子章，管理部統一管理所有印章。</div>
+      <div class="mod-risk">
+        <strong>&#9888; 缺少這個功能：</strong>紙本假單放主管桌上三天沒人動，員工也不敢去催；主管出差開會，假單就卡住整個流程；ISO 稽核的時候翻箱倒櫃找簽核紀錄，找不到就被開缺失。
+      </div>
+    </div>
+    <div class="mod-right">
+      <div class="mod-price">NT$ 60,000</div>
+      <div class="mod-price-unit">市場開發行情</div>
+    </div>
+  </div>
+
+  <!-- M3 -->
+  <div class="mod-card">
+    <div class="mod-left">
+      <div class="mod-header">
+        <span class="mod-icon">&#9200;</span>
+        <span class="mod-name">自動化流程引擎</span>
+      </div>
+      <div class="mod-desc">48 小時未簽核系統自動核准（特休、補休、病假適用）。核准、退回、自動核准三種情境 Email 即時通知申請人。</div>
+      <div class="mod-risk">
+        <strong>&#9888; 缺少這個功能：</strong>管理部每天花時間打電話問「那張假單簽了沒？」；員工不知道假到底批了沒，只能當面去問主管；主管忘記簽，員工安排好的假直接泡湯。
+      </div>
+    </div>
+    <div class="mod-right">
+      <div class="mod-price">NT$ 45,000</div>
+      <div class="mod-price-unit">市場開發行情</div>
+    </div>
+  </div>
+
+  <!-- M4 -->
+  <div class="mod-card">
+    <div class="mod-left">
+      <div class="mod-header">
+        <span class="mod-icon">&#127919;</span>
+        <span class="mod-name">特休與補休管理</span>
+      </div>
+      <div class="mod-desc">依年資顯示特休餘額、已使用天數、剩餘天數。補休餘額即時顯示、到期日提醒。管理部可人工調整額度。</div>
+      <div class="mod-risk">
+        <strong>&#9888; 缺少這個功能：</strong>年底管理部用 Excel 對帳 60 人的特休，光這件事就要花 2～3 天；員工自己算的跟管理部算的對不上，每年糾紛一堆；補休期限到了沒人追蹤，勞檢的時候解釋不清楚。
+      </div>
+    </div>
+    <div class="mod-right">
+      <div class="mod-price">NT$ 45,000</div>
+      <div class="mod-price-unit">市場開發行情</div>
+    </div>
+  </div>
+
+  <!-- M5 -->
+  <div class="mod-card">
+    <div class="mod-left">
+      <div class="mod-header">
+        <span class="mod-icon">&#128101;</span>
+        <span class="mod-name">帳號權限與員工資料庫</span>
+      </div>
+      <div class="mod-desc">員工／主管／管理部三級權限控管。完整帳號管理介面（新增、修改、停用）。員工主檔含部門、性別、電子章上傳狀態。</div>
+      <div class="mod-risk">
+        <strong>&#9888; 缺少這個功能：</strong>離職員工帳號沒關掉，任何人都還能登入查看請假資料，資安隱患；新進員工第一天要請假結果帳號還沒建好；誰能看誰的資料全靠口頭約定，出事的時候說不清。
+      </div>
+    </div>
+    <div class="mod-right">
+      <div class="mod-price">NT$ 50,000</div>
+      <div class="mod-price-unit">市場開發行情</div>
+      <div class="mod-bonus">&#127873; 已包含在內</div>
+    </div>
+  </div>
+
+  <!-- M6 -->
+  <div class="mod-card">
+    <div class="mod-left">
+      <div class="mod-header">
+        <span class="mod-icon">&#128274;</span>
+        <span class="mod-name">資料安全與稽核紀錄</span>
+      </div>
+      <div class="mod-desc">一鍵 ZIP 備份（含資料庫、附件、電子章、LOG），上傳即可還原。所有關鍵操作自動寫入稽核紀錄，支援依日期、動作、人員篩選查詢。</div>
+      <div class="mod-risk">
+        <strong>&#9888; 缺少這個功能：</strong>硬碟故障或中毒，全公司多年的請假紀錄一夕歸零；勞資爭議的時候拿不出完整的簽核與出勤紀錄，公司只能吃悶虧；ISO 9001 稽核要求的文件化紀錄通通沒有，直接被開重大缺失。
+      </div>
+    </div>
+    <div class="mod-right">
+      <div class="mod-price">NT$ 50,000</div>
+      <div class="mod-price-unit">市場開發行情</div>
+      <div class="mod-bonus">&#127873; 已包含在內</div>
+    </div>
+  </div>
+
+  <!-- M7 -->
+  <div class="mod-card">
+    <div class="mod-left">
+      <div class="mod-header">
+        <span class="mod-icon">&#128640;</span>
+        <span class="mod-name">系統部署與保固服務</span>
+      </div>
+      <div class="mod-desc">系統部署至公司內網主機。Google Chrome、Microsoft Edge 相容性測試（Win 7 / 10 / 11 全覆蓋）。驗收通過後 3 個月免費保固（程式瑕疵免費修復）。</div>
+      <div class="mod-risk">
+        <strong>&#9888; 缺少這個服務：</strong>自己安裝設定環境可能折騰一整個禮拜還搞不定；上線後發現 Bug 沒人修，60 個人只能乾等；Windows 7 的舊電腦開起來版面全跑掉，又要花時間處理相容性問題。
+      </div>
+    </div>
+    <div class="mod-right">
+      <div class="mod-price">NT$ 40,000</div>
+      <div class="mod-price-unit">市場開發行情</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ SUM → BUNDLE ═══════════════════ -->
+<div class="section">
+  <div class="section-tag">Pricing</div>
+  <div class="section-heading">基礎版報價</div>
+  <div class="section-sub">以上七大模組在市場上的開發總值超過 NT$380,000。本專案以完整系統交付，一次到位。</div>
+
+  <table class="sum-table">
+    <tr><th style="width:50%">模組</th><th style="width:25%">市場開發行情</th><th style="width:25%">本案報價</th></tr>
+    <tr><td>&#128221; 核心請假系統</td><td>NT$ 90,000</td><td rowspan="7" style="vertical-align:middle; text-align:center; background: linear-gradient(135deg, #eef6f5, #e0f0ed) !important; font-size: 42px; font-weight: 800; color: #1f5f58; border-left: 3px solid #1f5f58;">NT$<br>300,000</td></tr>
+    <tr><td>&#9989; 電子簽核流程</td><td>NT$ 60,000</td></tr>
+    <tr><td>&#9200; 自動化流程引擎</td><td>NT$ 45,000</td></tr>
+    <tr><td>&#127919; 特休與補休管理</td><td>NT$ 45,000</td></tr>
+    <tr><td>&#128101; 帳號權限與員工資料庫 <span style="color:#2e7d32; font-weight:700; font-size:13px;">已包含</span></td><td>NT$ 50,000</td></tr>
+    <tr><td>&#128274; 資料安全與稽核紀錄 <span style="color:#2e7d32; font-weight:700; font-size:13px;">已包含</span></td><td>NT$ 50,000</td></tr>
+    <tr><td>&#128640; 系統部署與保固服務</td><td>NT$ 40,000</td></tr>
+    <tr class="sum-row"><td>市場行情總值</td><td class="line-through">NT$ 380,000</td><td style="text-align:center; background: #eef6f5 !important; color: #1f5f58;">含稅</td></tr>
+  </table>
+
+  <div class="bundle-card">
+    <div class="bundle-label">基礎版完整系統</div>
+    <div class="bundle-price">NT$ 300,000</div>
+    <div class="bundle-sub">七大模組全部包含 ・ 含稅 ・ 含部署 ・ 3 個月保固</div>
+    <div class="bundle-save">&#127881; 相當於市場行情的 79 折</div>
+  </div>
+
+  <div class="pay-steps">
+    <div class="pay-step">
+      <div class="step-num">STEP 1 — 簽約款</div>
+      <div class="step-amount">NT$ 150,000</div>
+      <div class="step-label">合約簽訂後 7 個工作日內</div>
+      <div class="step-desc">簽約後即安排系統部署與驗收排程</div>
+    </div>
+    <div class="pay-step">
+      <div class="step-num">STEP 2 — 驗收款</div>
+      <div class="step-amount">NT$ 150,000</div>
+      <div class="step-label">驗收通過後 7 個工作日內</div>
+      <div class="step-desc">確認所有功能正常運作後才需支付</div>
+    </div>
+  </div>
+
+  <table class="detail-table">
+    <tr><th>項目</th><th>內容</th></tr>
+    <tr><td>交付範圍</td><td>七大模組全部功能（含 2 項加值贈送模組）</td></tr>
+    <tr><td>交付方式</td><td>系統部署至客戶指定之內網主機</td></tr>
+    <tr><td>預計交付</td><td>2026 年 4 月底（系統已完成，可配合貴公司時間）</td></tr>
+    <tr><td>驗收期限</td><td>收到驗收通知後 14 個日曆天內完成</td></tr>
+    <tr><td>保固期間</td><td>驗收通過之日起 3 個月，程式瑕疵免費修復</td></tr>
+    <tr><td>報價有效期</td><td>自報價日起 30 日內有效</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════ DEPLOY ═══════════════════ -->
+<div class="section">
+  <div class="section-tag">Deployment</div>
+  <div class="section-heading">部署方式簡單，員工端零安裝</div>
+  <div class="section-sub">系統部署在公司內網的一台主機上，員工只要有瀏覽器就能使用。</div>
+
+  <div class="deploy-cards">
+    <div class="deploy-card">
+      <div class="d-icon">&#128187;</div>
+      <h3>員工端零安裝</h3>
+      <p>打開 Chrome 或 Edge<br>輸入網址即可使用</p>
+    </div>
+    <div class="deploy-card">
+      <div class="d-icon">&#127760;</div>
+      <h3>Win 7 / 10 / 11 相容</h3>
+      <p>所有員工電腦<br>皆已測試相容</p>
+    </div>
+    <div class="deploy-card">
+      <div class="d-icon">&#128640;</div>
+      <h3>未來可擴充</h3>
+      <p>同一台主機可串接<br>出勤、薪資等新系統</p>
+    </div>
+  </div>
+
+  <div class="env-grid">
+    <div class="env-box">
+      <h4>&#128421; 伺服器端（公司準備）</h4>
+      <ul>
+        <li>一台基本電腦即可（i3/i5、8GB、SSD）</li>
+        <li>作業系統：Windows 10 / 11 專業版</li>
+        <li>接入公司內網，確保員工可存取</li>
+        <li>硬體成本約 NT$ 8,000 ~ 15,000</li>
+        <li>乙方可協助評估與部署</li>
+      </ul>
+    </div>
+    <div class="env-box">
+      <h4>&#128100; 員工端（無需準備）</h4>
+      <ul>
+        <li>使用現有電腦，不需額外採購</li>
+        <li>不需安裝任何軟體</li>
+        <li>支援 Google Chrome、Microsoft Edge</li>
+        <li>輸入內網網址即可登入使用</li>
+        <li>可建立桌面捷徑方便存取</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ UPGRADE ═══════════════════ -->
+<div class="section">
+  <div class="section-tag">Upgrade Path</div>
+  <div class="section-heading">未來只需升級一次，就是完全體</div>
+  <div class="section-sub">1.0 Plus 上線穩定半年後，直接升級 2.0 即可。不需要分兩次升級，一步到位。</div>
+
+  <div class="upgrade-box">
+    <h3>2.0 升級版 — 效率全面提升</h3>
+    <p class="up-sub">將原本規劃的第二階段與第三階段合併為一次升級，省去重複部署與驗收的時間成本。</p>
+
+    <table class="sum-table">
+      <tr><th style="width:50%">升級功能</th><th style="width:25%">市場開發行情</th><th style="width:25%">說明</th></tr>
+      <tr>
+        <td>&#128200; 特休自動計算</td>
+        <td>NT$ 40,000</td>
+        <td>依勞基法年資公式自動算，管理部不用再手動輸入，每年 7/1 自動更新</td>
+      </tr>
+      <tr>
+        <td>&#128336; 補休自動失效</td>
+        <td>NT$ 25,000</td>
+        <td>超過期限自動標記失效，減少人工追蹤與換薪作業</td>
+      </tr>
+      <tr>
+        <td>&#9889; 主管快速審核視窗</td>
+        <td>NT$ 45,000</td>
+        <td>登入後自動顯示待簽清單，一鍵快速核准或駁回，大幅縮短簽核時間</td>
+      </tr>
+      <tr>
+        <td>&#128101; 代理人授權管理</td>
+        <td>NT$ 35,000</td>
+        <td>主管不在時可指定代理人代簽，授權紀錄完整保留於稽核系統</td>
+      </tr>
+      <tr>
+        <td>&#9729; OneDrive 自動備份</td>
+        <td>NT$ 35,000</td>
+        <td>備份自動上傳雲端，含保留規則設定，不怕硬碟故障遺失資料</td>
+      </tr>
+      <tr>
+        <td>&#128272; 登入安全強化</td>
+        <td>NT$ 25,000</td>
+        <td>密碼錯誤 5 次鎖定帳號，管理部可手動解鎖，鎖定紀錄寫入稽核</td>
+      </tr>
+      <tr class="sum-row">
+        <td>市場行情總值</td>
+        <td class="line-through">NT$ 205,000</td>
+        <td style="background: #eef6f5 !important; color: #1f5f58; font-weight: 800;">本案報價 NT$ 180,000</td>
+      </tr>
+    </table>
+
+    <div class="upgrade-pricing">
+      <div class="up-price-box normal">
+        <div class="up-price-label">分開購買（1.0 + 2.0）</div>
+        <div class="up-price-num">NT$ 480,000</div>
+        <div class="up-price-detail">基礎版 30 萬 + 升級版 18 萬</div>
+      </div>
+      <div class="up-price-box combo">
+        <div class="early-badge">&#9733; 同步簽約優惠</div>
+        <div class="up-price-label">1.0 + 2.0 一起簽</div>
+        <div class="up-price-num">NT$ 450,000</div>
+        <div class="up-price-detail">含稅 ・ 含部署 ・ 各階段獨立驗收</div>
+        <div class="up-save">&#127881; 再省 NT$ 30,000</div>
+      </div>
+    </div>
+
+    <p class="up-note">
+      &#128161; 原始規劃為三階段共 NT$580,000、開發期程一年。<br>
+      現在只需兩階段、NT$450,000、半年內全數交付 —— 預算省 NT$130,000，時間提前半年。<br><br>
+      升級版可於 1.0 上線穩定後再啟動，不急。同步簽約僅鎖定優惠價格，不影響交付節奏。
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════ CTA ═══════════════════ -->
+<div class="section">
+  <div class="cta">
+    <h3>系統已完成，歡迎安排時間實際操作體驗</h3>
+    <p>所有功能已開發完畢，可隨時安排展示。<br>實際操作後再決定，完全沒有壓力。</p>
+    <p style="margin-top: 24px; opacity:.7; font-size:15px;">仁格數位科技有限公司（Ren Studio）<br>ren.studio.dev@gmail.com</p>
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2026 仁格數位科技有限公司（Ren Studio）— 本提案僅供育華興業股份有限公司內部評估使用
+</div>
+
+</body>
+</html>
