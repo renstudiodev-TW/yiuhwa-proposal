@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>育華興業休假系統 — 專案提案簡報</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft JhengHei", "微軟正黑體", "PingFang TC", sans-serif; color: #1a1a2e; background: #f4f4f8; line-height: 1.8; }
+
+  /* ── 通用容器 ── */
+  .section { max-width: 920px; margin: 0 auto; padding: 64px 56px; }
+  .section + .section { padding-top: 0; }
+
+  /* ── 封面 ── */
+  .hero {
+    background: linear-gradient(135deg, #1f5f58 0%, #2a7a6f 50%, #1f5f58 100%);
+    color: #fff; text-align: center; padding: 100px 40px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ""; position: absolute; bottom: -2px; left: 0; right: 0; height: 48px;
+    background: #f4f4f8; border-radius: 48px 48px 0 0;
+  }
+  .hero-label { font-size: 14px; letter-spacing: 4px; opacity: .7; margin-bottom: 16px; text-transform: uppercase; }
+  .hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
+  .hero h2 { font-size: 18px; font-weight: 400; opacity: .85; margin-bottom: 40px; }
+  .hero-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-size: 48px; font-weight: 800; line-height: 1; }
+  .hero-stat .unit { font-size: 14px; opacity: .7; margin-top: 4px; }
+
+  /* ── 卡片區 ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin: 24px 0; }
+  .card {
+    background: #fff; border-radius: 16px; padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05); border: 1px solid #e8eeec;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(31,95,88,.12); }
+  .card-icon { font-size: 28px; margin-bottom: 12px; }
+  .card h3 { font-size: 16px; font-weight: 700; color: #1f5f58; margin-bottom: 8px; }
+  .card p { font-size: 13.5px; color: #555; }
+
+  /* ── 標題 ── */
+  .section-tag { font-size: 12px; letter-spacing: 3px; color: #1f5f58; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+  .section-heading { font-size: 26px; font-weight: 800; margin-bottom: 6px; color: #1a1a2e; }
+  .section-sub { font-size: 15px; color: #666; margin-bottom: 28px; }
+
+  /* ── 時間軸 ── */
+  .timeline { position: relative; padding-left: 36px; margin: 20px 0; }
+  .timeline::before { content: ""; position: absolute; left: 12px; top: 8px; bottom: 8px; width: 3px; background: linear-gradient(to bottom, #1f5f58, #a7d5cf); border-radius: 2px; }
+  .tl-item { position: relative; margin-bottom: 32px; }
+  .tl-item:last-child { margin-bottom: 0; }
+  .tl-dot { position: absolute; left: -30px; top: 6px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid #1f5f58; background: #fff; }
+  .tl-item.done .tl-dot { background: #1f5f58; }
+  .tl-phase { font-size: 12px; color: #1f5f58; font-weight: 700; letter-spacing: 1px; }
+  .tl-title { font-size: 17px; font-weight: 700; margin: 2px 0 4px; }
+  .tl-desc { font-size: 13.5px; color: #555; }
+  .tl-tag { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 20px; margin-top: 6px; font-weight: 600; }
+  .tl-tag.green { background: #e6f5f0; color: #1f5f58; }
+  .tl-tag.blue { background: #e8f0fe; color: #2a5bd7; }
+
+  /* ── 表格 ── */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { border: 1px solid #d8ddd8; padding: 10px 14px; text-align: left; }
+  th { background: #eef6f5; color: #1f5f58; font-weight: 600; }
+  tr:nth-child(even) td { background: #fafcfc; }
+  .total-row td { font-weight: 700; background: #eef6f5 !important; font-size: 15px; }
+
+  /* ── 環境建議 ── */
+  .env-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+  .env-box {
+    background: #fff; border-radius: 14px; padding: 24px;
+    border: 1px solid #e8eeec; box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .env-box h4 { color: #c0392b; font-size: 14px; margin-bottom: 10px; }
+  .env-box.good h4 { color: #1f5f58; }
+  .env-box ul { font-size: 13.5px; color: #555; margin-left: 18px; }
+  .env-box li { margin: 4px 0; }
+
+  /* ── 價值高亮 ── */
+  .value-bar {
+    background: linear-gradient(135deg, #1f5f58, #2a7a6f);
+    color: #fff; border-radius: 14px; padding: 32px 36px; margin: 28px 0;
+    display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; text-align: center;
+  }
+  .value-item .v-num { font-size: 36px; font-weight: 800; }
+  .value-item .v-label { font-size: 13px; opacity: .8; margin-top: 2px; }
+
+  /* ── 報價摘要 ── */
+  .price-card {
+    background: #fff; border: 2px solid #1f5f58; border-radius: 16px;
+    padding: 32px; text-align: center; margin: 24px 0;
+  }
+  .price-card .price { font-size: 42px; font-weight: 800; color: #1f5f58; }
+  .price-card .price-sub { font-size: 14px; color: #888; margin-top: 4px; }
+
+  /* ── CTA ── */
+  .cta {
+    text-align: center; padding: 48px 40px;
+    background: linear-gradient(135deg, #1f5f58 0%, #2a7a6f 100%);
+    color: #fff; border-radius: 20px; margin: 32px 0 0;
+  }
+  .cta h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .cta p { font-size: 14px; opacity: .85; }
+
+  /* ── 頁尾 ── */
+  .footer { text-align: center; padding: 32px; font-size: 12px; color: #aaa; }
+
+  /* ── RWD ── */
+  @media (max-width: 640px) {
+    .section { padding: 40px 24px; }
+    .hero { padding: 64px 24px 56px; }
+    .hero h1 { font-size: 26px; }
+    .hero-stats { gap: 24px; }
+    .hero-stat .num { font-size: 36px; }
+    .env-grid { grid-template-columns: 1fr; }
+    .value-bar { padding: 24px 20px; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .card:hover { transform: none; box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .value-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cta { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== 封面 ===================== -->
+<div class="hero">
+  <div class="hero-label">專案提案簡報</div>
+  <h1>育華興業休假系統</h1>
+  <h2>WEB 版 — 從紙本到數位，讓請假流程更高效</h2>
+  <div style="margin-top:12px; font-size:14px; opacity:.7;">仁格數位科技有限公司（Ren Studio）提案</div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num">8</div>
+      <div class="unit">天內完成 1.0 核心開發</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">58</div>
+      <div class="unit">萬 — 三階段全部完成</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">3</div>
+      <div class="unit">個月內全數交付</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 目前成果 ===================== -->
+<div class="section">
+  <div class="section-tag">Current Progress</div>
+  <div class="section-heading">SRS 1.0 — 已完成並可實際操作</div>
+  <div class="section-sub">自 3/26 首次聯繫至今，基礎版核心功能已全部開發完畢，以下為目前系統涵蓋的功能模組：</div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">&#128221;</div>
+      <h3>請假申請</h3>
+      <p>Web 表單、整天／非整天模式、跨日申請、14 種假別、自動計算時數、附件上傳</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#9989;</div>
+      <h3>簽核流程</h3>
+      <p>員工 → 主管 → 管理部三級簽核，支援核准與駁回，電子章自動套印</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#9200;</div>
+      <h3>48 小時自動核准</h3>
+      <p>特休、補休、病假超時未簽核，系統自動核准並 Email 通知</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128231;</div>
+      <h3>Email 通知</h3>
+      <p>核准、退回、自動核准三種情境，即時通知申請人</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128101;</div>
+      <h3>帳號與員工管理</h3>
+      <p>三級權限、部門管理、性別欄位、電子章上傳與狀態管理、帳號停用</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128190;</div>
+      <h3>備份與還原</h3>
+      <p>一鍵 ZIP 備份（含資料庫、附件、電子章、LOG）、上傳還原、稽核紀錄</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128202;</div>
+      <h3>假別規則引擎</h3>
+      <p>生理假每月 1 日上限、事假年度 14 天上限、假別證明文件提示</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128210;</div>
+      <h3>稽核 LOG</h3>
+      <p>登入、請假、簽核、備份、還原等所有關鍵操作完整記錄</p>
+    </div>
+  </div>
+
+  <div class="value-bar">
+    <div class="value-item">
+      <div class="v-num">16</div>
+      <div class="v-label">功能模組已完成</div>
+    </div>
+    <div class="value-item">
+      <div class="v-num">14</div>
+      <div class="v-label">假別完整定義</div>
+    </div>
+    <div class="value-item">
+      <div class="v-num">60</div>
+      <div class="v-label">人可同時使用</div>
+    </div>
+    <div class="value-item">
+      <div class="v-num">0</div>
+      <div class="v-label">需安裝軟體</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 超額交付說明 ===================== -->
+<div class="section">
+  <div class="section-tag">Beyond Expectations</div>
+  <div class="section-heading">為什麼 1.0 就包含了這麼多功能？</div>
+  <div class="section-sub">在設計基礎版架構時，我已將 SRS 2.0 與 3.0 的部分需求預先納入考量，確保系統從第一天就有穩固的基礎。</div>
+
+  <table>
+    <tr><th style="width:220px">功能</th><th style="width:100px">原屬階段</th><th>說明</th></tr>
+    <tr><td>員工資料庫完整管理</td><td>SRS 2.0</td><td>含部門、性別、電子章、權限、停用——在 1.0 就已完整交付</td></tr>
+    <tr><td>稽核紀錄系統</td><td>SRS 2.0</td><td>所有關鍵操作皆已寫入稽核，不需等到 2.0 才有</td></tr>
+    <tr><td>手動備份與還原</td><td>SRS 3.0</td><td>ZIP 備份含完整資料庫快照，一鍵還原——不需等到 3.0 才有</td></tr>
+    <tr><td>備份／還原稽核</td><td>SRS 3.0</td><td>每次備份與還原皆留有完整紀錄</td></tr>
+  </table>
+  <p style="font-size:14px; color:#555; margin-top:12px;">
+    這樣的做法讓後續 2.0 與 3.0 的開發可以在已驗證的穩定架構上直接擴充，不需打掉重練，也確保每個階段升級都不會影響既有功能。
+  </p>
+</div>
+
+<!-- ===================== 三階段規劃 ===================== -->
+<div class="section">
+  <div class="section-tag">Roadmap</div>
+  <div class="section-heading">三階段開發規劃</div>
+  <div class="section-sub">原始預估開發期程為一年，本專案預計三個月內完成全部交付。</div>
+
+  <div class="timeline">
+    <div class="tl-item done">
+      <div class="tl-dot"></div>
+      <div class="tl-phase">PHASE 1</div>
+      <div class="tl-title">SRS 1.0 基礎版 — 已完成</div>
+      <div class="tl-desc">核心請假流程、簽核機制、帳號管理、電子章、Email 通知、備份還原、稽核 LOG、假別規則引擎</div>
+      <span class="tl-tag green">預計 2026 年 4 月底驗收</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-phase">PHASE 2</div>
+      <div class="tl-title">SRS 2.0 升級版 — 管理效率與安全性</div>
+      <div class="tl-desc">主管快速審核視窗、代理人完整授權管理、OneDrive 設定、登入安全強化（鎖定＋解鎖）、特休自動計算、補休自動失效、錯誤碼體系</div>
+      <span class="tl-tag blue">預計 2026 年 6 月中交付</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-phase">PHASE 3</div>
+      <div class="tl-title">SRS 3.0 升級版 — 企業級資料安全</div>
+      <div class="tl-desc">排程自動備份、AES256 加密、檔案完整性驗證、備份保留規則、OneDrive 自動上傳、還原雙重驗證</div>
+      <span class="tl-tag blue">預計 2026 年 7 月中交付</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 部署環境建議 ===================== -->
+<div class="section">
+  <div class="section-tag">Infrastructure</div>
+  <div class="section-heading">部署環境建議</div>
+  <div class="section-sub">考量貴公司現有 Server 與員工電腦環境（Windows 7 / 10 / 11 混合，約 60 人），以下為我們的建議方案。</div>
+
+  <div class="env-grid">
+    <div class="env-box">
+      <h4>&#9888; 現有舊主機的風險</h4>
+      <ul>
+        <li>作業系統已超出微軟安全更新支援週期</li>
+        <li>硬體老化，故障風險高</li>
+        <li>無法獲得安全性修補，存在資安風險</li>
+        <li>與其他服務共用，互相干擾</li>
+      </ul>
+    </div>
+    <div class="env-box good">
+      <h4>&#10004; 建議：獨立新主機</h4>
+      <ul>
+        <li>一台基本電腦即可（i3/i5、8GB、SSD）</li>
+        <li>硬體成本約 NT$ 8,000 ~ 15,000</li>
+        <li>獨立運行，24 小時穩定服務</li>
+        <li>未來可擴充其他系統（出勤、薪資等）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cards" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">&#128187;</div>
+      <h3>員工端零安裝</h3>
+      <p>打開 Chrome 或 Edge<br>輸入網址即可使用</p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">&#127760;</div>
+      <h3>Win 7/10/11 相容</h3>
+      <p>所有員工電腦<br>皆已測試相容</p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">&#128640;</div>
+      <h3>未來可擴充</h3>
+      <p>同一台主機可串接<br>出勤、薪資等新系統</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 報價摘要 ===================== -->
+<div class="section">
+  <div class="section-tag">Pricing</div>
+  <div class="section-heading">報價摘要</div>
+  <div class="section-sub">依三階段分別計價，全部在預算範圍內完成。</div>
+
+  <table>
+    <tr><th>階段</th><th style="width:160px">金額（含稅）</th><th style="width:160px">預計交付</th></tr>
+    <tr><td>SRS 1.0 基礎版</td><td>NT$ 300,000</td><td>2026 年 4 月底</td></tr>
+    <tr><td>SRS 2.0 升級版</td><td>NT$ 160,000</td><td>2026 年 6 月中</td></tr>
+    <tr><td>SRS 3.0 升級版</td><td>NT$ 120,000</td><td>2026 年 7 月中</td></tr>
+    <tr class="total-row"><td>專案總計</td><td>NT$ 580,000</td><td>約 3 個月全數交付</td></tr>
+  </table>
+
+  <div class="price-card">
+    <div class="price">NT$ 580,000</div>
+    <div class="price-sub">三階段完整交付 ・ 含稅 ・ 含部署協助 ・ 各階段 3 個月免費保固</div>
+  </div>
+
+  <div class="value-bar">
+    <div class="value-item">
+      <div class="v-num">3 個月</div>
+      <div class="v-label">全部交付（原估 1 年）</div>
+    </div>
+    <div class="value-item">
+      <div class="v-num">58 萬</div>
+      <div class="v-label">預算 60 萬內</div>
+    </div>
+    <div class="value-item">
+      <div class="v-num">提前 9 個月</div>
+      <div class="v-label">上線 = 提前省下行政成本</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CTA ===================== -->
+<div class="section">
+  <div class="cta">
+    <h3>準備好讓請假流程數位化了嗎？</h3>
+    <p>SRS 1.0 已可進入驗收階段，歡迎安排時間進行系統展示與細節討論。</p>
+    <p style="margin-top: 20px; opacity:.7; font-size:13px;">仁格數位科技有限公司（Ren Studio）<br>ren.studio.dev@gmail.com</p>
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2026 仁格數位科技有限公司（Ren Studio）— 本簡報僅供育華興業股份有限公司內部評估使用
+</div>
+
+</body>
+</html>
